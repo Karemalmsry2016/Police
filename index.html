@@ -14,7 +14,7 @@
             --ssf-silver: #f3f4f6;
             --ssf-dark: #111827;
             --ssf-accent: #9ca3af;
-            --gold: #fbbf24;
+            --gold-title: #fbbf24;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
@@ -25,27 +25,38 @@
             direction: rtl;
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden;
         }
 
         /* شاشة الشعار الافتتاحية */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--ssf-dark); z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 1.5s ease-out, visibility 1.5s;
         }
         .intro-logo {
-            width: 250px; height: 250px;
+            width: 280px; height: 280px;
             background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Special_Security_Forces_Saudi_Arabia.svg/1200px-Special_Security_Forces_Saudi_Arabia.svg.png') no-repeat center/contain;
+            margin-bottom: 20px;
         }
 
         .main-header {
-            width: 100%; background: var(--ssf-gray); padding: 30px 20px;
-            text-align: center; border-bottom: 4px solid var(--ssf-accent);
+            width: 100%; background: var(--ssf-gray); padding: 40px 20px;
+            text-align: center; border-bottom: 5px solid var(--ssf-accent);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .container { width: 100%; max-width: 500px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .container { width: 100%; max-width: 500px; padding: 25px; display: flex; flex-direction: column; gap: 15px; }
+
+        .search-box {
+            background: rgba(55, 65, 81, 0.5); border: 1px solid var(--ssf-accent);
+            padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 10px;
+        }
+
+        .input-ssf {
+            width: 100%; padding: 12px; background: #000; border: 1px solid var(--ssf-accent);
+            color: white; text-align: center; margin-bottom: 10px; border-radius: 5px;
+        }
 
         .ssf-btn {
             background: var(--ssf-silver); color: var(--ssf-dark);
@@ -55,75 +66,79 @@
             width: 100%; border: none; font-size: 1rem;
         }
         .ssf-btn:hover { transform: scale(1.02); background: #fff; }
-        .ssf-btn i { margin-left: 15px; font-size: 1.2rem; color: var(--ssf-gray); }
+        .ssf-btn i { font-size: 1.4rem; margin-left: 15px; color: var(--ssf-gray); }
 
-        /* نافذة العرض المنبثقة */
+        /* تنسيق النوافذ المنبثقة */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px); padding: 20px;
         }
         .modal-box {
-            background: #1f2937; width: 90%; max-width: 450px; padding: 25px;
-            border-radius: 15px; border: 1px solid var(--gold); position: relative;
-            max-height: 80vh; overflow-y: auto; box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+            background: var(--ssf-gray); width: 100%; max-width: 500px; padding: 25px;
+            border-radius: 15px; border: 1px solid var(--ssf-silver); position: relative;
+            max-height: 85vh; overflow-y: auto;
         }
-
-        .cert-title { color: var(--gold); font-size: 1.4rem; text-align: center; margin-bottom: 15px; border-bottom: 1px solid #374151; padding-bottom: 10px; }
+        .cert-header { color: var(--gold-title); border-bottom: 1px solid var(--ssf-accent); padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
         
-        /* تأثير تظليل الكلمات للقراءة الآلية */
-        .reading-text { line-height: 1.8; color: #d1d5db; text-align: justify; font-size: 1rem; }
-        .reading-text span { transition: all 0.2s; padding: 0 2px; border-radius: 3px; }
-        .highlight { color: #000 !important; background: var(--gold) !important; font-weight: bold; }
+        /* تظليل الكلام كلمة كلمة */
+        .reading-text { line-height: 1.8; color: #fff; text-align: justify; }
+        .reading-text span { transition: all 0.2s; padding: 0 2px; }
+        .highlight { color: #000 !important; background: var(--gold-title) !important; font-weight: bold; border-radius: 3px; }
 
-        #adminPanel { display: none; background: #1f2937; padding: 20px; border-radius: 10px; margin-top: 15px; border: 1px solid var(--ssf-accent); }
-        .input-ssf { width: 100%; padding: 12px; background: #000; border: 1px solid var(--ssf-accent); color: white; text-align: center; margin-bottom: 10px; border-radius: 5px; }
+        #adminPanel { display: none; background: #1f2937; padding: 20px; border-radius: 10px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <!-- الشاشة الافتتاحية -->
     <div id="intro-overlay"><div class="intro-logo"></div></div>
 
     <header class="main-header">
-        <h2>قوات الأمن الخاصة | SSF</h2>
+        <h1>قوات الأمن الخاصة | SSF</h1>
         <p style="font-size: 0.8rem; color: var(--ssf-accent);">هيبة . قوة . انضباط</p>
     </header>
 
     <main class="container">
-        <!-- أزرار الشهادات -->
-        <div class="ssf-btn" onclick="showCert('basic')"><i class="fas fa-medal"></i> شهادة الفرد الأساسي</div>
-        <div class="ssf-btn" onclick="showCert('protection')"><i class="fas fa-user-shield"></i> شهادة أمن وحماية</div>
-        <div class="ssf-btn" onclick="showCert('raid')"><i class="fas fa-person-rifle"></i> شهادة وحدة المداهمات</div>
-        
-        <!-- الهيكل القيادي -->
-        <div class="ssf-btn" onclick="showPop('leadersPop')" style="margin-top:10px; background:var(--ssf-gray); color:white;">
-            <i class="fas fa-users-cog"></i> الهيكل القيادي
+        <!-- قسم الاستعلام -->
+        <div class="search-box">
+            <h3 style="margin-bottom: 10px;"><i class="fas fa-shield-alt"></i> استعلام الاعتماد العسكري</h3>
+            <input type="text" id="sInput" class="input-ssf" placeholder="أدخل رقم الهوية العسكرية">
+            <button onclick="runSearch()" style="width:100%; padding:10px; background:var(--ssf-gray); color:white; border:none; cursor:pointer; font-weight:bold;">تحقق من السجل</button>
+            <div id="resBox" style="margin-top:10px; display:none;"></div>
+        </div>
+
+        <!-- أزرار القائمة الأصلية -->
+        <a href="https://docs.google.com/spreadsheets/d/18BFOMBgPdvZDGeiDK_FdPtFx-SQvicE5I3pPFt6B_eQ/edit?usp=drivesdk" target="_blank" class="ssf-btn">
+            <i class="fas fa-scroll"></i> <span>لائحة قوات الأمن الخاصة</span>
+        </a>
+
+        <div class="ssf-btn" onclick="showPop('leadersPop')">
+            <i class="fas fa-users-cog"></i> <span>قادة قوات الأمن الخاصة</span>
+        </div>
+
+        <div class="ssf-btn" onclick="showPop('accreditationPop')">
+            <i class="fas fa-file-contract"></i> <span>نظام الاعتماد العسكري</span>
+        </div>
+
+        <!-- زر الشهادات الجديد -->
+        <div class="ssf-btn" onclick="showPop('certMainPop')" style="border-right-color: var(--gold-title);">
+            <i class="fas fa-medal"></i> <span>شهادات قوات الأمن الخاصة</span>
         </div>
 
         <div style="text-align:center; padding:20px; font-size:0.7rem; cursor:pointer; color:var(--ssf-accent);" onclick="openAdmin()">إدارة المنظومة</div>
-        
+
         <div id="adminPanel">
             <input type="text" id="admID" class="input-ssf" placeholder="الرقم العسكري">
             <input type="text" id="admStatus" class="input-ssf" placeholder="النتيجة النهائية">
-            <button onclick="saveData()" style="width:100%; padding:12px; background:var(--gold); color:black; border:none; font-weight:900; cursor:pointer; border-radius:5px;">حفظ السجل</button>
+            <button onclick="saveData()" style="width:100%; padding:12px; background:var(--ssf-gray); color:white; border:none; font-weight:900;">حفظ السجل</button>
         </div>
     </main>
 
-    <!-- نافذة الشهادات الديناميكية -->
-    <div id="certModal" class="modal-overlay" onclick="hidePop('certModal')">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <h3 id="mTitle" class="cert-title"></h3>
-            <div id="mBody" class="reading-text"></div>
-            <button onclick="hidePop('certModal')" style="width:100%; padding:12px; margin-top:20px; background:var(--gold); border:none; font-weight:bold; cursor:pointer; border-radius:5px;">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- نافذة القادة -->
+    <!-- النوافذ المنبثقة -->
     <div id="leadersPop" class="modal-overlay" onclick="hidePop('leadersPop')">
         <div class="modal-box" onclick="event.stopPropagation()">
-            <h3 class="cert-title">قادة القوات</h3>
-            <div style="line-height: 2.5; text-align: center;">
+            <h3 class="cert-header">الهيكل القيادي</h3>
+            <div style="text-align: center; line-height: 2;">
                 <p><b>القائد:</b> الملازم أول هيثم الأسمري</p>
                 <p><b>نائب القائد:</b> النقيب عمار العنزي</p>
                 <p><b>الإدارة:</b> الرقيب مؤيد الزهراني</p>
@@ -131,69 +146,68 @@
         </div>
     </div>
 
+    <div id="accreditationPop" class="modal-overlay" onclick="hidePop('accreditationPop')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h3 class="cert-header">نظام الاعتماد العسكري</h3>
+            <p style="text-align: center;">يتكون الاعتماد من 4 مراحل (ثقافة عسكرية، لياقة، رماية، وتخرج) لضمان كفاءة الفرد.</p>
+        </div>
+    </div>
+
+    <!-- نافذة الشهادات الرئيسية -->
+    <div id="certMainPop" class="modal-overlay" onclick="hidePop('certMainPop')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h3 class="cert-header">اختر الشهادة للعرض</h3>
+            <div class="ssf-btn" onclick="readCert('basic')" style="margin-bottom:10px;">الفرد الأساسي</div>
+            <div class="ssf-btn" onclick="readCert('protection')" style="margin-bottom:10px;">أمن وحماية</div>
+            <div class="ssf-btn" onclick="readCert('raid')">وحدة المداهمات</div>
+        </div>
+    </div>
+
+    <!-- نافذة القراءة الآلية -->
+    <div id="readerModal" class="modal-overlay" onclick="hidePop('readerModal')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h3 id="rTitle" class="cert-header"></h3>
+            <div id="rBody" class="reading-text"></div>
+        </div>
+    </div>
+
     <script>
         const dbURL = "https://kr-soldiers-default-rtdb.firebaseio.com/ssf";
 
-        // نصوص الشهادات المحدثة
-        const certData = {
-            basic: {
-                title: "شهادة الفرد الأساسي",
-                content: "التعريف: اللبنة الأولى في بناء العسكري المحترف داخل القوات. وصف الشهادة: هي الدورة التأسيسية الإلزامية لكل فرد ينضم لقوات الأمن الخاصة، تركز على تحويل الفرد من الحياة المدنية إلى الحياة العسكرية الاحترافية. أهداف الدورة: غرس قيم الانضباط العسكري والولاء والضبط والربط العسكري الصارم بالإضافة إلى تدريبات مكثفة على اللياقة البدنية والمهارات القتالية الأساسية. المميزات: اعتماد الفرد كعنصر رسمي ومفعل ضمن صفوف قوة الأمن الخاصة. الأولوية في صرف وتأمين العهدة العسكرية الأساسية اللازمة. فتح المجال للالتحاق بمختلف الدورات التخصصية المتقدمة. صرف البدلات والامتيازات المالية الأساسية للفرد العسكري."
-            },
-            protection: {
-                title: "شهادة أمن وحماية",
-                content: "التعريف: تأهيل المنسوبين لحماية الشخصيات والمنشآت الحيوية. وصف الشهادة: دورة تخصصية مخصصة لتأمين المنشآت الحيوية ذات الحساسية العالية وتوفير الحماية الشاملة والمباشرة للشخصيات الهامة والقيادات العليا. أهداف الدورة: التدريبات المكثفة على الرصد والمراقبة الوقائية والقيادة الوقائية التكتيكية وحماية الشخصيات في مختلف الظروف والبيئات الميدانية. المميزات: إمكانية العمل المباشر في وحدات حماية الشخصيات الهامة والمواكب الرسمية. الأولوية والترشيح لمرافقة وتأمين القيادات العليا. الحصول رسمياً على لقب مرافق شخصي متخصص. صلاحية حمل واستخدام أسلحة تكتيكية مخصصة."
-            },
-            raid: {
-                title: "شهادة وحدة المداهمات",
-                content: "التعريف: دورة تخصصية في اقتحام وتطهير المواقع عالية الخطورة. وصف الشهادة: دورة تخصصية متقدمة ونوعية تهدف إلى تدريب وتأهيل الأفراد على كيفية تنفيذ عمليات الاقتحام والمداهمة للأماكن المغلقة وعالية الخطورة. أهداف الدورة: تشمل التدريبات محاكاة واقعية لإنقاذ الرهائن والتعامل الاحترافي مع العناصر الإرهابية والمجرمين الخطرين واستخدام الأسلحة التكتيكية السريعة الدقيقة. المميزات: الحصول رسمياً على لقب عنصر اقتحام متخصص. صلاحية قيادة الفرق الميدانية وتوجيه العمليات أثناء تنفيذ المداهمات. الأولوية لقيادة مهام التدخل السريع التكتيكية. زيادة ملحوظة في البدلات التخصصية المرتبطة بالخطر."
-            }
+        const certs = {
+            basic: { title: "الفرد الأساسي", text: "التعريف: اللبنة الأولى في بناء العسكري المحترف داخل القوات. وصف الشهادة: هي الدورة التأسيسية الإلزامية لكل فرد ينضم لقوات الأمن الخاصة تركز على تحويل الفرد من الحياة المدنية إلى الحياة العسكرية الاحترافية. أهداف الدورة: غرس قيم الانضباط العسكري والولاء والضبط والربط العسكري الصارم بالإضافة إلى تدريبات مكثفة على اللياقة البدنية والمهارات القتالية الأساسية. المميزات: اعتماد الفرد كعنصر رسمي ومفعل ضمن صفوف قوة الأمن الخاصة. الأولوية في صرف وتأمين العهدة العسكرية الأساسية اللازمة. فتح المجال للالتحاق بمختلف الدورات التخصصية المتقدمة. صرف البدلات والامتيازات المالية الأساسية للفرد العسكري." },
+            protection: { title: "أمن وحماية", text: "التعريف: تأهيل المنسوبين لحماية الشخصيات والمنشآت الحيوية. وصف الشهادة: دورة تخصصية مخصصة لتأمين المنشات الحيوية ذات الحساسية العالية وتوفير الحماية الشاملة والمباشرة للشخصيات الهامة والقيادات العليا. أهداف الدورة: التدريبات المكثفة على الرصد والمراقبة الوقائية والقيادة الوقائية التكتيكية وحماية الشخصيات في مختلف الظروف والبيئات الميدانية. المميزات: إمكانية العمل المباشر في وحدات حماية الشخصيات الهامة والمواكب الرسمية. الأولوية والترشيح لمرافقة وتأمين القيادات العليا في مختلف الفعاليات والمهام الخارجية. الحصول رسمياً على لقب مرافق شخصي متخصص. صلاحية حمل واستخدام أسلحة تكتيكية مخصصة." },
+            raid: { title: "وحدة المداهمات", text: "التعريف: دورة تخصصية في اقتحام وتطهير المواقع عالية الخطورة. وصف الشهادة: دورة تخصصية متقدمة ونوعية تهدف إلى تدريب وتأهيل الأفراد على كيفية تنفيذ عمليات الاقتحام والمداهمة للأماكن المغلقة وعالية الخطورة. أهداف الدورة: تشمل التدريبات محاكاة واقعية لإنقاذ الرهائن والتعامل الاحترافي مع العناصر الإرهابية والمجرمين الخطرين واستخدام الأسلحة التكتيكية السريعة الدقيقة. المميزات: الحصول رسمياً على لقب عنصر اقتحام متخصص. صلاحية قيادة الفرق الميدانية وتوجيه العمليات أثناء تنفيذ المداهمات. الأولوية والترشيح لقيادة مهام التدخل السريع التكتيكية. زيادة ملحوظة في البدلات التخصصية المرتبطة بالخطر." }
         };
 
-        // وظيفة عرض الشهادة مع تأثير القراءة
-        function showCert(type) {
-            const data = certData[type];
-            document.getElementById('mTitle').innerText = data.title;
-            const body = document.getElementById('mBody');
-            body.innerHTML = '';
+        function readCert(key) {
+            hidePop('certMainPop');
+            const data = certs[key];
+            document.getElementById('rTitle').innerText = data.title;
+            const body = document.getElementById('rBody');
+            body.innerHTML = data.text.split(' ').map(w => `<span>${w}</span>`).join(' ');
+            showPop('readerModal');
             
-            // تقسيم النص إلى كلمات
-            data.content.split(' ').forEach(word => {
-                const span = document.createElement('span');
-                span.innerText = word + ' ';
-                body.appendChild(span);
-            });
-
-            document.getElementById('certModal').style.display = 'flex';
-            startReading();
-        }
-
-        // تأثير القراءة الآلية (تظليل الكلمات)
-        function startReading() {
-            if(window.currentInterval) clearInterval(window.currentInterval);
-            const words = document.querySelectorAll('.reading-text span');
             let i = 0;
-            window.currentInterval = setInterval(() => {
-                if (i > 0) words[i-1].classList.remove('highlight');
-                if (i < words.length) {
-                    words[i].classList.add('highlight');
+            const spans = body.querySelectorAll('span');
+            if(window.readInterval) clearInterval(window.readInterval);
+            window.readInterval = setInterval(() => {
+                if(i > 0) spans[i-1].classList.remove('highlight');
+                if(i < spans.length) {
+                    spans[i].classList.add('highlight');
                     i++;
-                } else {
-                    clearInterval(window.currentInterval);
-                }
-            }, 180); // سرعة القراءة
+                } else { clearInterval(window.readInterval); }
+            }, 200);
         }
 
         function showPop(id) { document.getElementById(id).style.display = 'flex'; }
-        
         function hidePop(id) { 
             document.getElementById(id).style.display = 'none'; 
-            if(window.currentInterval) clearInterval(window.currentInterval);
+            if(window.readInterval) clearInterval(window.readInterval);
         }
 
         function openAdmin() {
-            const u = prompt("اسم المستخدم:");
-            const p = prompt("كلمة المرور:");
+            const u = prompt("User:"); const p = prompt("Pass:");
             if(u === "Admin" && p === "@Admin") document.getElementById('adminPanel').style.display = 'block';
         }
 
@@ -202,7 +216,16 @@
             const st = document.getElementById('admStatus').value;
             if(!id || !st) return;
             await fetch(`${dbURL}/${id}.json`, { method: 'PUT', body: JSON.stringify({ status: st }) });
-            alert("تم الحفظ بنجاح.");
+            alert("تم الحفظ.");
+        }
+
+        async function runSearch() {
+            const id = document.getElementById('sInput').value;
+            const res = document.getElementById('resBox');
+            res.style.display = 'block'; res.innerText = "جاري البحث...";
+            const response = await fetch(`${dbURL}/${id}.json`);
+            const data = await response.json();
+            res.innerHTML = data ? `<div style="background:green;padding:10px;">${data.status}</div>` : "غير موجود";
         }
 
         window.onload = () => {
@@ -210,7 +233,7 @@
                 const intro = document.getElementById('intro-overlay');
                 intro.style.opacity = '0';
                 setTimeout(() => intro.style.visibility = 'hidden', 1500);
-            }, 2500);
+            }, 2000);
         };
     </script>
 </body>
