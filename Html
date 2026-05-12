@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قوات الأمن الخاصة | SSF Digital Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --ssf-gray: #374151; /* رمادي عسكري */
+            --ssf-silver: #f3f4f6; /* أبيض فضي */
+            --ssf-dark: #111827;
+            --ssf-accent: #9ca3af;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body {
+            background-color: var(--ssf-dark);
+            color: var(--ssf-silver);
+            direction: rtl;
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* شاشة الشعار (Intro Fade Out) */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--ssf-dark); z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1.5s ease-out, visibility 1.5s;
+        }
+        .intro-logo {
+            width: 200px; height: 200px;
+            background: url('https://upload.wikimedia.org/wikipedia/ar/b/bd/Special_Security_Forces_Logo.png') no-repeat center/contain;
+            filter: grayscale(1) brightness(2); /* شعار فضي */
+            margin-bottom: 20px;
+        }
+
+        /* الهيدر */
+        .main-header {
+            width: 100%; background: var(--ssf-gray); padding: 40px 20px;
+            text-align: center; border-bottom: 5px solid var(--ssf-accent);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .main-header h1 { font-size: 2rem; font-weight: 900; letter-spacing: 1px; }
+
+        .container { width: 100%; max-width: 500px; padding: 25px; display: flex; flex-direction: column; gap: 15px; }
+
+        /* البحث الاستعلامي */
+        .search-box {
+            background: rgba(55, 65, 81, 0.5); border: 1px solid var(--ssf-accent);
+            padding: 20px; border-radius: 10px; text-align: center;
+        }
+        .input-ssf {
+            width: 100%; padding: 12px; background: #000; border: 1px solid var(--ssf-accent);
+            color: white; text-align: center; margin-bottom: 10px; border-radius: 5px;
+        }
+
+        /* الأزرار الـ 6 */
+        .ssf-btn {
+            background: var(--ssf-silver); color: var(--ssf-dark);
+            padding: 18px; border-radius: 8px; display: flex; align-items: center;
+            text-decoration: none; font-weight: 700; transition: 0.3s;
+            border-right: 8px solid var(--ssf-gray);
+        }
+        .ssf-btn:hover { transform: scale(1.03); background: #fff; }
+        .ssf-btn i { font-size: 1.4rem; margin-left: 15px; color: var(--ssf-gray); }
+
+        /* لوحة الإدارة */
+        #adminPanel {
+            display: none; background: #1f2937; padding: 20px;
+            border: 2px solid var(--ssf-silver); border-radius: 10px; margin-top: 15px;
+        }
+
+        #resBox { display: none; margin-top: 10px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <!-- الشاشة الافتتاحية -->
+    <div id="intro-overlay">
+        <div class="intro-logo"></div>
+        <h2 style="letter-spacing: 5px;">قوات الأمن الخاصة</h2>
+    </div>
+
+    <header class="main-header">
+        <h1>قوات الأمن الخاصة | SSF</h1>
+        <p style="font-size: 0.8rem; color: var(--ssf-accent);">هيبة . قوة . انضباط</p>
+    </header>
+
+    <main class="container">
+        
+        <!-- نظام الاعتماد والاستعلام -->
+        <div class="search-box">
+            <h3 style="margin-bottom: 10px;"><i class="fas fa-shield-alt"></i> نظام الاعتماد العسكري</h3>
+            <input type="text" id="sInput" class="input-ssf" placeholder="أدخل رقم الهوية العسكرية">
+            <button onclick="runSearch()" style="width:100%; padding:10px; background:var(--ssf-gray); color:white; border:none; cursor:pointer; font-weight:bold;">تحقق من القيد</button>
+            <div id="resBox"></div>
+        </div>
+
+        <!-- الخيارات الـ 6 -->
+        <a href="#" class="ssf-btn">
+            <i class="fas fa-upload"></i> <span>1. تقديم طلب ترقية</span>
+        </a>
+        <a href="#" class="ssf-btn">
+            <i class="fas fa-trophy"></i> <span>2. إنجازات قوات الأمن الخاصة</span>
+        </a>
+        <a href="#" class="ssf-btn">
+            <i class="fas fa-users-cog"></i> <span>3. قادة قوات الأمن الخاصة</span>
+        </a>
+        <a href="#" class="ssf-btn">
+            <i class="fas fa-newspaper"></i> <span>4. آخر الأخبار والزيارات</span>
+        </a>
+        <a href="#" class="ssf-btn">
+            <i class="fas fa-certificate"></i> <span>5. شهادات قوات الأمن الخاصة</span>
+        </a>
+        <a href="#" class="ssf-btn">
+            <i class="fas fa-check-double"></i> <span>6. نظام الاعتماد الرسمي</span>
+        </a>
+
+        <div style="text-align:center; padding:20px; font-size:0.7rem; cursor:pointer; color:var(--ssf-accent);" onclick="openAdmin()">إدارة المنظومة</div>
+
+        <!-- لوحة تحكم الإدارة -->
+        <div id="adminPanel">
+            <input type="text" id="admID" class="input-ssf" placeholder="الرقم العسكري">
+            <input type="text" id="admStatus" class="input-ssf" placeholder="الحالة (مثال: معتمد - رتبة نقيب)">
+            <button onclick="saveData()" style="width:100%; padding:12px; background:var(--ssf-gray); color:white; border:none; font-weight:900;">حفظ في السجل السحابي</button>
+        </div>
+
+    </main>
+
+    <script>
+        // رابط قاعدة البيانات الخاص بك
+        const dbURL = "https://kr-soldiers-default-rtdb.firebaseio.com/ssf";
+
+        // تأثير الاختفاء (Fade Out)
+        window.onload = () => {
+            setTimeout(() => {
+                const intro = document.getElementById('intro-overlay');
+                intro.style.opacity = '0';
+                setTimeout(() => intro.style.visibility = 'hidden', 1500);
+            }, 2000);
+        };
+
+        // تسجيل الدخول للإدارة
+        function openAdmin() {
+            const u = prompt("اسم المستخدم:");
+            const p = prompt("كلمة المرور:");
+            if(u === "Admin" && p === "@Admin") {
+                document.getElementById('adminPanel').style.display = 'block';
+            } else { alert("صلاحيات غير كافية!"); }
+        }
+
+        // حفظ البيانات في Firebase (للكل)
+        async function saveData() {
+            const id = document.getElementById('admID').value;
+            const st = document.getElementById('admStatus').value;
+            if(!id || !st) return alert("أكمل البيانات");
+            
+            await fetch(`${dbURL}/${id}.json`, {
+                method: 'PUT',
+                body: JSON.stringify({ status: st })
+            });
+            alert("تم الحفظ بنجاح.");
+            document.getElementById('admID').value = "";
+            document.getElementById('admStatus').value = "";
+        }
+
+        // استعلام البيانات من Firebase (للجميع)
+        async function runSearch() {
+            const id = document.getElementById('sInput').value;
+            const box = document.getElementById('resBox');
+            if(!id) return;
+            box.style.display = 'block';
+            box.innerText = "جاري الاتصال بالسجلات...";
+
+            try {
+                const response = await fetch(`${dbURL}/${id}.json`);
+                const data = await response.json();
+                if(data) {
+                    box.innerHTML = `<b style="color:var(--ssf-silver)">الحالة:</b> ${data.status}`;
+                } else {
+                    box.innerText = "هذا الرقم العسكري غير مسجل.";
+                }
+            } catch(e) { box.innerText = "خطأ في الاتصال!"; }
+        }
+    </script>
+</body>
+</html>
