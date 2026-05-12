@@ -3,202 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قوات الأمن الخاصة | SSF</title>
+    <title>بوابة قوات الأمن الخاصة | SSF</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* الألوان المستوحاة من الصورة 162771.jpg */
+        /* الألوان الرسمية: رمادي، أبيض، أسود */
         :root {
-            --ssf-bg: #111827;
-            --ssf-header: #374151;
-            --ssf-card: #f9fafb;
-            --ssf-text-dark: #1f2937;
-            --ssf-gold: #fbbf24;
+            --ssf-dark-gray: #374151; /* رمادي عسكري غامق */
+            --ssf-light-gray: #9ca3af; /* رمادي فاتح */
+            --ssf-bg: #111827; /* خلفية الموقع */
+            --ssf-white: #ffffff;
+            --ssf-gold: #fbbf24; /* للتمييز البسيط */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
 
         body {
             background-color: var(--ssf-bg);
-            color: #fff;
+            color: var(--ssf-white);
             direction: rtl;
+            overflow-x: hidden;
         }
 
-        /* شاشة الشعار (تأكد من ظهورها) */
+        /* تأثير الشعار عند الدخول (Fade Out) */
         #intro-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--ssf-bg); z-index: 10000;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 1s ease-out, visibility 1s;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
         }
         .intro-logo {
-            width: 200px; height: 200px;
+            width: 250px; height: 250px;
             background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Special_Security_Forces_Saudi_Arabia.svg/1200px-Special_Security_Forces_Saudi_Arabia.svg.png') no-repeat center/contain;
         }
 
         header {
-            background: var(--ssf-header);
-            padding: 40px 20px;
+            background: var(--ssf-dark-gray);
+            padding: 35px 20px;
             text-align: center;
+            border-bottom: 4px solid var(--ssf-light-gray);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        header h1 { font-size: 1.8rem; font-weight: 900; }
-        header p { font-size: 0.9rem; color: #9ca3af; margin-top: 5px; }
+        header h1 { font-size: 1.6rem; font-weight: 900; letter-spacing: 1px; }
 
         .container {
-            max-width: 450px;
-            margin: 20px auto;
-            padding: 0 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            max-width: 500px;
+            margin: 25px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
 
-        /* تصميم الأزرار كما في الصورة 162771.jpg */
-        .ssf-btn {
-            background: var(--ssf-card);
-            color: var(--ssf-text-dark);
-            padding: 22px;
-            border-radius: 12px;
+        /* تصميم العناصر الستة */
+        .ssf-option {
+            background: var(--ssf-white);
+            color: var(--ssf-dark-gray);
+            padding: 20px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             text-decoration: none;
             font-weight: 700;
+            transition: 0.3s;
+            border-right: 10px solid var(--ssf-dark-gray);
             cursor: pointer;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
-        .ssf-btn i { font-size: 1.3rem; }
+        .ssf-option:hover {
+            transform: translateX(-5px);
+            background: #f3f4f6;
+        }
 
-        .btn-gray { background: #374151; color: #fff; }
+        .ssf-option i {
+            font-size: 1.4rem;
+            color: var(--ssf-dark-gray);
+            width: 30px;
+            text-align: center;
+        }
 
-        /* نافذة القراءة الآلية */
+        .option-text { flex-grow: 1; margin-right: 15px; font-size: 1rem; }
+
+        /* نافذة العرض */
         .modal {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 9999;
-            align-items: center; justify-content: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;
+            padding: 20px; backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background: #1f2937;
-            width: 100%; max-width: 400px;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid var(--ssf-gold);
+            background: var(--ssf-dark-gray); width: 100%; max-width: 450px;
+            padding: 25px; border-radius: 15px; border: 1px solid var(--ssf-light-gray);
+            max-height: 80vh; overflow-y: auto;
         }
 
-        .modal-content h3 { color: var(--ssf-gold); margin-bottom: 15px; text-align: center; }
+        .modal-content h3 { color: var(--ssf-gold); margin-bottom: 15px; text-align: center; border-bottom: 1px solid var(--ssf-light-gray); padding-bottom: 10px; }
 
-        .reading-area { line-height: 1.8; font-size: 1rem; color: #e5e7eb; text-align: justify; }
+        .reading-area { line-height: 2; font-size: 1rem; color: #fff; text-align: justify; }
         .reading-area span { transition: 0.2s; padding: 0 2px; }
         .highlight { background: var(--ssf-gold); color: #000; font-weight: bold; border-radius: 3px; }
+
+        .close-btn { width: 100%; padding: 12px; margin-top: 20px; background: var(--ssf-light-gray); border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
 
     </style>
 </head>
 <body>
 
+    <!-- الشاشة الافتتاحية مع تأثير التلاشي -->
     <div id="intro-overlay"><div class="intro-logo"></div></div>
 
     <header>
         <h1>قوات الأمن الخاصة | SSF</h1>
-        <p>هيبة . قوة . انضباط</p>
+        <p style="font-size: 0.8rem; color: var(--ssf-light-gray); margin-top: 5px;">هيبة . قوة . انضباط</p>
     </header>
 
     <main class="container">
-        <!-- الأزرار بنفس ترتيب وشكل الصورة 162771.jpg -->
-        <button class="ssf-btn" onclick="startReading('basic')">
+        <!-- الخيارات الستة المطلوبة -->
+        <div class="ssf-option" onclick="alert('سيتم فتح نموذج التقديم قريباً')">
+            <i class="fas fa-arrow-up-right-dots"></i>
+            <span class="option-text">تقديم طلب ترقية</span>
+        </div>
+
+        <div class="ssf-option" onclick="showInfo('إنجازات القوات', 'حققت قوات الأمن الخاصة نجاحات باهرة في مكافحة الإرهاب وحماية المنشآت الحيوية وتطوير الكوادر البشرية بأحدث التقنيات العسكرية العالمية.')">
+            <i class="fas fa-trophy"></i>
+            <span class="option-text">إنجازات قوات الأمن الخاصة</span>
+        </div>
+
+        <div class="ssf-option" onclick="showInfo('قادة القوات', 'القائد: الملازم أول هيثم الأسمري <br> نائب القائد: النقيب عمار العنزي <br> الإدارة: الرقيب مؤيد الزهراني')">
+            <i class="fas fa-user-tie"></i>
+            <span class="option-text">قادة قوات الأمن الخاصة</span>
+        </div>
+
+        <div class="ssf-option" onclick="showInfo('آخر الأخبار', '1. بدء دورة الصاعقة الجديدة. <br> 2. تحديث نظام الترقيات السنوي. <br> 3. زيارة تفقدية لمنشآت التدريب.')">
+            <i class="fas fa-newspaper"></i>
+            <span class="option-text">آخر أخبار قوات الأمن الخاصة</span>
+        </div>
+
+        <div class="ssf-option" onclick="showCertSelection()">
             <i class="fas fa-medal"></i>
-            <span>شهادة الفرد الأساسي</span>
-            <span></span> <!-- مساحة توازن -->
-        </button>
+            <span class="option-text">شهادات قوات الأمن الخاصة</span>
+        </div>
 
-        <button class="ssf-btn" onclick="startReading('protection')">
-            <i class="fas fa-user-shield"></i>
-            <span>شهادة أمن وحماية</span>
-            <span></span>
-        </button>
-
-        <button class="ssf-btn" onclick="startReading('raid')">
-            <i class="fas fa-person-rifle"></i>
-            <span>شهادة وحدة المداهمات</span>
-            <span></span>
-        </button>
-
-        <button class="ssf-btn btn-gray" onclick="toggleModal('leadersPop')">
-            <i class="fas fa-users"></i>
-            <span>الهيكل القيادي</span>
-            <span></span>
-        </button>
+        <div class="ssf-option" onclick="showInfo('نظام الاعتماد', 'نظام الاعتماد يهدف لتصنيف الأفراد بناءً على الكفاءة القتالية، اللياقة البدنية، والانضباط العسكري عبر 4 مراحل تقييم.')">
+            <i class="fas fa-check-double"></i>
+            <span class="option-text">نظام الاعتماد لقوات الأمن الخاصة</span>
+        </div>
     </main>
 
-    <!-- نافذة القراءة -->
-    <div id="readerModal" class="modal" onclick="closeAll()">
+    <!-- نافذة الشهادات للقراءة الآلية -->
+    <div id="readerModal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <h3 id="mTitle"></h3>
             <div id="mBody" class="reading-area"></div>
-        </div>
-    </div>
-
-    <!-- نافذة القادة -->
-    <div id="leadersPop" class="modal" onclick="closeAll()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3>الهيكل القيادي</h3>
-            <div style="text-align: center; line-height: 2.5;">
-                <p><b>القائد:</b> الملازم أول هيثم الأسمري</p>
-                <p><b>نائب القائد:</b> النقيب عمار العنزي</p>
-                <p><b>الإدارة:</b> الرقيب مؤيد الزهراني</p>
-            </div>
+            <button class="close-btn" onclick="closeModal()">إغلاق النافذة</button>
         </div>
     </div>
 
     <script>
         const certs = {
-            basic: { title: "الفرد الأساسي", text: "التعريف: اللبنة الأولى في بناء العسكري المحترف داخل القوات. وصف الشهادة: هي الدورة التأسيسية الإلزامية لكل فرد ينضم لقوات الأمن الخاصة تركز على تحويل الفرد من الحياة المدنية إلى الحياة العسكرية الاحترافية. أهداف الدورة: غرس قيم الانضباط العسكري والولاء والضبط والربط العسكري الصارم بالإضافة إلى تدريبات مكثفة على اللياقة البدنية والمهارات القتالية الأساسية. المميزات: اعتماد الفرد كعنصر رسمي ومفعل ضمن صفوف قوة الأمن الخاصة. الأولوية في صرف وتأمين العهدة العسكرية الأساسية اللازمة. فتح المجال للالتحاق بمختلف الدورات التخصصية المتقدمة." },
-            protection: { title: "أمن وحماية", text: "التعريف: تأهيل المنسوبين لحماية الشخصيات والمنشآت الحيوية. وصف الشهادة: دورة تخصصية مخصصة لتأمين المنشآت الحيوية ذات الحساسية العالية وتوفير الحماية الشاملة والمباشرة للشخصيات الهامة والقيادات العليا. أهداف الدورة: التدريبات المكثفة على الرصد والمراقبة الوقائية والقيادة الوقائية التكتيكية وحماية الشخصيات في مختلف الظروف والبيئات الميدانية. المميزات: إمكانية العمل المباشر في وحدات حماية الشخصيات الهامة والمواكب الرسمية. الحصول على لقب مرافق شخصي متخصص." },
-            raid: { title: "وحدة المداهمات", text: "التعريف: دورة تخصصية في اقتحام وتطهير المواقع عالية الخطورة. وصف الشهادة: دورة تخصصية متقدمة تهدف إلى تدريب وتأهيل الأفراد على كيفية تنفيذ عمليات الاقتحام والمداهمة للأماكن المغلقة وعالية الخطورة. أهداف الدورة: تشمل التدريبات محاكاة واقعية لإنقاذ الرهائن والتعامل مع العناصر الإرهابية والمجرمين الخطرين. المميزات: الحصول على لقب عنصر اقتحام متخصص. صلاحية قيادة الفرق الميدانية وتوجيه العمليات أثناء تنفيذ المداهمات." }
+            basic: { title: "الفرد الأساسي", text: "التعريف: اللبنة الأولى في بناء العسكري المحترف. وصف الشهادة: دورة تأسيسية إلزامية تركز على تحويل الفرد من الحياة المدنية إلى الحياة العسكرية الاحترافية. المميزات: الأولوية في صرف العهدة وفتح باب الدورات المتقدمة." },
+            // يمكن إضافة نصوص الشهادات الأخرى هنا
         };
 
-        let readTimer;
+        let timer;
 
-        function startReading(id) {
-            const data = certs[id];
+        function showInfo(title, content) {
+            document.getElementById('mTitle').innerHTML = title;
+            document.getElementById('mBody').innerHTML = content;
+            document.getElementById('readerModal').style.display = 'flex';
+        }
+
+        function showCertSelection() {
+            // كعرض سريع، سنبدأ قراءة شهادة الفرد الأساسي كمثال للتظليل
+            const data = certs.basic;
             document.getElementById('mTitle').innerText = data.title;
             const body = document.getElementById('mBody');
             body.innerHTML = data.text.split(' ').map(w => `<span>${w}</span>`).join(' ');
-            
             document.getElementById('readerModal').style.display = 'flex';
             
             let i = 0;
             const spans = body.querySelectorAll('span');
-            if(readTimer) clearInterval(readTimer);
-            readTimer = setInterval(() => {
+            if(timer) clearInterval(timer);
+            timer = setInterval(() => {
                 if(i > 0) spans[i-1].classList.remove('highlight');
                 if(i < spans.length) {
                     spans[i].classList.add('highlight');
                     i++;
-                } else { clearInterval(readTimer); }
+                } else { clearInterval(timer); }
             }, 200);
         }
 
-        function toggleModal(id) { document.getElementById(id).style.display = 'flex'; }
-        
-        function closeAll() {
-            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-            if(readTimer) clearInterval(readTimer);
+        function closeModal() {
+            document.getElementById('readerModal').style.display = 'none';
+            if(timer) clearInterval(timer);
         }
 
+        // إخفاء الشعار (Fade Out)
         window.onload = () => {
             setTimeout(() => {
                 const intro = document.getElementById('intro-overlay');
                 intro.style.opacity = '0';
-                setTimeout(() => intro.style.visibility = 'hidden', 1000);
+                setTimeout(() => intro.style.visibility = 'hidden', 1500);
             }, 2000);
         };
     </script>
